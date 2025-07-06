@@ -28,7 +28,7 @@ A lightweight, browser-based web app that calculates the **minimum required dept
 ---
 
 ## 🗂️ Folder Structure
-
+```
 minimum-d-beam-aci318/
 ├── index.html           # Main HTML structure
 ├── styles/
@@ -37,7 +37,7 @@ minimum-d-beam-aci318/
 │   └── main.js          # Beam depth calculation & unit conversion
 ├── images/
 │   └── logo.png         # Logo used in the navbar
-
+```
 ---
 
 ## 🧪 How to Use
