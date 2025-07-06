@@ -29,13 +29,14 @@ A lightweight, browser-based web app that calculates the **minimum required dept
 
 ## 🗂️ Folder Structure
 
-- `index.html` — Main HTML structure
-- `styles/`
-  - `styles.css` — Styling and responsive layout rules
-- `scripts/`
-  - `main.js` — Beam depth calculation & unit toggle logic
-- `images/`
-  - `logo.png` — Logo used in the navbar
+minimum-d-beam-aci318/
+├── index.html           # Main HTML structure
+├── styles/
+│   └── styles.css       # Styling and layout rules
+├── scripts/
+│   └── main.js          # Beam depth calculation & unit conversion
+├── images/
+│   └── logo.png         # Logo used in the navbar
 
 ---
 
