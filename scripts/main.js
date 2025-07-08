@@ -214,6 +214,61 @@ document.getElementById('condition').addEventListener('change', calculateMinDept
 document.getElementById('units').addEventListener('change', toggleUnits);
 window.addEventListener('resize', manageCTAButton);
 
+// Theme Toggle Functionality
+function setTheme(theme) {
+    document.documentElement.setAttribute('data-theme', theme);
+    const themeIcon = document.querySelector('.theme-icon');
+    const themeLabel = document.querySelector('.theme-label');
+    if (themeIcon) {
+        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+    if (themeLabel) {
+        themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
+    }
+    if (window.innerWidth > 780) {
+        localStorage.setItem('theme', theme);
+    }
+}
+
+function initializeTheme() {
+    const isMobile = window.innerWidth <= 780;
+    const themeToggleButton = document.querySelector('.theme-toggle');
+    
+    if (isMobile) {
+        // Auto-detect browser's color scheme for mobile
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        setTheme(prefersDark ? 'dark' : 'light');
+        // Remove stored theme to prioritize system preference
+        localStorage.removeItem('theme');
+    } else {
+        // Use stored theme or default to light for desktop
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setTheme(savedTheme);
+        // Add click event listener for theme toggle
+        if (themeToggleButton) {
+            themeToggleButton.addEventListener('click', () => {
+                const currentTheme = document.documentElement.getAttribute('data-theme');
+                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+                setTheme(newTheme);
+            });
+        }
+    }
+}
+
+// Update theme on window resize
+window.addEventListener('resize', () => {
+    initializeTheme();
+    manageCTAButton();
+});
+
+// Listen for changes in system color scheme (mobile only)
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    if (window.innerWidth <= 780) {
+        setTheme(e.matches ? 'dark' : 'light');
+    }
+});
+
 // Initialize
+initializeTheme();
 manageCTAButton();
 calculateMinDepth();
