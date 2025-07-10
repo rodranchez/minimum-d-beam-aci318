@@ -32,21 +32,21 @@ function toggleUnits() {
         spanUnit.innerText = 'feet';
         fyUnit.innerText = 'psi';
         if (currentFy) {
-            // Convert MPa to psi: 1 MPa = 145.03773773375 psi
-            fyInput.value = formatNumberWithCommas((currentFy * 145.03773773375).toString(), units);
+            // Convert MPa to psi: 1 MPa = 145.03773773020924409138 psi
+            fyInput.value = formatNumberWithCommas((currentFy * 145.03773773020924409138).toString(), units);
         } else {
             fyInput.value = formatNumberWithCommas('60000', units); // Default 60,000 psi
         }
         if (currentSpan) {
-            // Convert meters to feet: 1 m = 3.280839895 ft
-            spanInput.value = formatNumberWithCommas((currentSpan * 3.280839895).toString(), units, true);
+            // Convert meters to feet: 1 m = 3.2808398950131233596 ft
+            spanInput.value = formatNumberWithCommas((currentSpan * 3.2808398950131233596).toString(), units, true);
         }
     } else {
         spanUnit.innerText = 'meters';
         fyUnit.innerText = 'MPa';
         if (currentFy) {
-            // Convert psi to MPa: 1 psi = 0.00689476 MPa
-            fyInput.value = formatNumberWithCommas((currentFy * 0.00689476).toString(), units);
+            // Convert psi to MPa: 1 psi = 0.006894757293168361 MPa
+            fyInput.value = formatNumberWithCommas((currentFy * 0.006894757293168361).toString(), units);
         } else {
             fyInput.value = formatNumberWithCommas('414', units); // Default 414 MPa
         }
