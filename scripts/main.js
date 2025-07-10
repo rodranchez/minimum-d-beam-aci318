@@ -180,21 +180,6 @@ document.getElementById('fy').addEventListener('input', function(e) {
     calculateMinDepth();
 });
 
-// Add input event listener for fy to format with commas
-document.getElementById('fy').addEventListener('input', function(e) {
-    const cursorPosition = e.target.selectionStart;
-    const value = e.target.value;
-    // Allow empty input or valid number (digits, optional decimal)
-    if (value === '' || /^\d*\.?\d*$/.test(value.replace(/,/g, ''))) {
-        const formattedValue = formatNumberWithCommas(value);
-        e.target.value = formattedValue;
-        // Restore cursor position (adjust for added/removed commas)
-        const newPosition = cursorPosition + (formattedValue.length - value.length);
-        e.target.setSelectionRange(newPosition, newPosition);
-    }
-    calculateMinDepth();
-});
-
 // Input event listener for span (format with commas)
 document.getElementById('span').addEventListener('input', function(e) {
     const cursorPosition = e.target.selectionStart;
@@ -219,51 +204,44 @@ function setTheme(theme) {
     document.documentElement.setAttribute('data-theme', theme);
     const themeIcon = document.querySelector('.theme-icon');
     const themeLabel = document.querySelector('.theme-label');
+    
     if (themeIcon) {
-        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        themeIcon.src = theme === 'dark' ? 'images/moon-icon.svg' : 'images/sun-icon.svg';
+        themeIcon.alt = theme === 'dark' ? 'Dark mode' : 'Light mode';
     }
     if (themeLabel) {
         themeLabel.textContent = theme === 'dark' ? 'Dark' : 'Light';
     }
-    if (window.innerWidth > 780) {
-        localStorage.setItem('theme', theme);
-    }
+    // Always store the theme to persist user preference
+    localStorage.setItem('theme', theme);
 }
 
 function initializeTheme() {
-    const isMobile = window.innerWidth <= 780;
-    const themeToggleButton = document.querySelector('.theme-toggle');
+    // Check for stored theme first
+    let savedTheme = localStorage.getItem('theme');
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
     
-    if (isMobile) {
-        // Auto-detect browser's color scheme for mobile
-        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-        setTheme(prefersDark ? 'dark' : 'light');
-        // Remove stored theme to prioritize system preference
-        localStorage.removeItem('theme');
-    } else {
-        // Use stored theme or default to light for desktop
-        const savedTheme = localStorage.getItem('theme') || 'light';
-        setTheme(savedTheme);
-        // Add click event listener for theme toggle
-        if (themeToggleButton) {
-            themeToggleButton.addEventListener('click', () => {
-                const currentTheme = document.documentElement.getAttribute('data-theme');
-                const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
-                setTheme(newTheme);
-            });
-        }
+    // If no saved theme, use system preference
+    if (!savedTheme) {
+        savedTheme = prefersDark ? 'dark' : 'light';
+    }
+    
+    setTheme(savedTheme);
+    
+    const themeToggleButton = document.querySelector('.theme-toggle');
+    if (themeToggleButton) {
+        themeToggleButton.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            setTheme(newTheme);
+        });
     }
 }
 
-// Update theme on window resize
-window.addEventListener('resize', () => {
-    initializeTheme();
-    manageCTAButton();
-});
-
-// Listen for changes in system color scheme (mobile only)
+// Update theme on system color scheme change
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (window.innerWidth <= 780) {
+    // Only update if no user preference is stored
+    if (!localStorage.getItem('theme')) {
         setTheme(e.matches ? 'dark' : 'light');
     }
 });
